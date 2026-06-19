@@ -2,12 +2,21 @@
 """Clockify weekly time entry creator — GUI."""
 
 from datetime import date, datetime, timedelta, timezone, time as dtime
+import os
 import tkinter as tk
 from tkinter import ttk, messagebox
 import requests
 
 # ── Configuration ─────────────────────────────────────────────────────────────
-API_KEY      = "NWQyZDQzYTktNTllZi00Nzg4LWFjMDYtNTc0ZjQyYjc3MDIw"
+# Copy .env.example to .env and set your key. Never commit .env.
+_env_path = os.path.join(os.path.dirname(__file__), ".env")
+if os.path.exists(_env_path):
+    for _line in open(_env_path):
+        _k, _, _v = _line.strip().partition("=")
+        if _k and not _k.startswith("#"):
+            os.environ.setdefault(_k, _v)
+
+API_KEY      = os.environ.get("CLOCKIFY_API_KEY", "")
 WORKSPACE_ID = "600c355584390918698e348d"
 BASE_URL     = "https://api.clockify.me/api/v1"
 
